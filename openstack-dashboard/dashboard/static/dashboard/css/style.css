@@ -396,9 +396,31 @@ table form {
 }
 
 .overview {
-    font-size: 24px;
+    //font-size: 24px;
 }
-
+/* Instance Detail */
+#instance_tabs {
+  margin-bottom: 10px;
+}
+#instance_tabs li {
+  background: none repeat scroll 0 0 #EDF9FF;
+  display: inline-block;
+  height: 17px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center;
+  width: 120px;
+  border: 1px solid #E5E5E5;
+}
+#instance_tabs li.active {
+  background:#E9F5FA;
+  border: 1px solid #C0D9E4;
+}
+#instance_tabs li.active a {
+  font-weight: bold;
+  color: #4790AE;
+  outline: 0 none;
+}
 .status_box.medium .status span, .status_box.medium .overview { color: #d1b100; }
 .status_box.bad .status span, .status_box.bad .overview {  color: #eb1400; }
 .status_box.good .status { background: url(../images/status_sprite.png) 6px 8px no-repeat; }
