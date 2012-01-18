@@ -110,7 +110,7 @@ class LaunchForm(forms.SelfHandlingForm):
     user_data = forms.CharField(widget=forms.Textarea,
                                 label=_("User Data"),
                                 required=False)
-    count = forms.CharField(max_length=80, label=_("Count"))
+    count = forms.CharField(max_length=80, label=_("Count"), help_text="The number of instances you wish to launch")
 
     # make the dropdown populate when the form is loaded not when django is
     # started
@@ -160,7 +160,7 @@ class LaunchForm(forms.SelfHandlingForm):
                               data.get('key_name'),
                               normalize_newlines(data.get('user_data')),
                               data.get('security_groups'),
-                              data['count'])
+                              data.get('count'))
 
             msg = _('Instance was successfully launched')
             LOG.info(msg)
