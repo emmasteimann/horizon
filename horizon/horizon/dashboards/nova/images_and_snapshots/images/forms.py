@@ -110,7 +110,8 @@ class LaunchForm(forms.SelfHandlingForm):
     user_data = forms.CharField(widget=forms.Textarea,
                                 label=_("User Data"),
                                 required=False)
-    count = forms.CharField(max_length=80, label=_("Count"), help_text="The number of instances you wish to launch")
+    count = forms.CharField(max_length=80, label=_("Count"),
+                help_text="The number of instances you wish to launch")
 
     # make the dropdown populate when the form is loaded not when django is
     # started
