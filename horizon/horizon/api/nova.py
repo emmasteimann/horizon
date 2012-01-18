@@ -257,11 +257,11 @@ def keypair_list(request):
 
 
 def server_create(request, name, image, flavor,
-                           key_name, user_data, security_groups):
+                           key_name, user_data, security_groups, count):
     return Server(novaclient(request).servers.create(
             name, image, flavor, userdata=user_data,
             security_groups=security_groups,
-            key_name=key_name), request)
+            key_name=key_name, min_count=count), request)
 
 
 def server_delete(request, instance):
