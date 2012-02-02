@@ -20,37 +20,34 @@ horizon.addInitFunction(function () {
     return true;
   });
 
-  // Confirmation on deletion of items.
-  // TODO (tres): These need to be localizable or to just plain go away in favor
-  // of modals.
-  $(".terminate").click(function () {
-    var response = confirm('Are you sure you want to terminate the Instance: ' + $(this).attr('title') + "?");
-    return response;
-  });
-
-  $(".delete").click(function (e) {
-    var response = confirm('Are you sure you want to delete the ' + $(this).attr('title') + " ?");
-    return response;
-  });
-
-  $(".reboot").click(function (e) {
-    var response = confirm('Are you sure you want to reboot the ' + $(this).attr('title') + " ?");
-    return response;
-  });
-
-  $(".disable").click(function (e) {
-    var response = confirm('Are you sure you want to disable the ' + $(this).attr('title') + " ?");
-    return response;
-  });
-
-  $(".enable").click(function (e) {
-    var response = confirm('Are you sure you want to enable the ' + $(this).attr('title') + " ?");
-    return response;
-  });
-
-  $(".detach").click(function (e) {
-    var response = confirm('Are you sure you want to detach the ' + $(this).attr('title') + " ?");
-    return response;
+  // Alert confirmation dialog modal
+  $(document).on('click', "button[name='action']", function(e){
+    e.preventDefault();
+    var self = $(this);
+    var clickedBtnValue = self.val();
+    var currentForm = self.closest("form");
+    var modalPopover = $('<div class="modal" />');
+    var modalPopoverContent = "<div class='modal-header'>" 
+    + "<a class='close' data-dismiss='modal'>×</a>"
+    +"<h3>Confirm Action</h3>"
+    +"</div>"
+    +"<div class='modal-body'>"
+    +"<p>Are you sure you want to "+self.html()+"?</p>"
+    +"</div>"
+    +"<div class='modal-footer'>"
+    +"<a href='#' class='btn primary'>Proceed with Action</a>"
+    +"<a href='#' class='btn' data-dismiss='modal'>Close</a>"
+    +"</div>";
+    $(modalPopover).html(modalPopoverContent);
+    $(modalPopover).modal();
+    $('body').append(modalPopover);
+    $(modalPopover).on('hidden', function () {
+      $(modalPopover).remove();
+    });
+    $(modalPopover).on('click', '.btn.primary', function(){
+      currentForm.append("<input type='hidden' name='action' value='"+clickedBtnValue+"'/>");
+      currentForm.submit();
+    });
   });
 
   /* Twipsy tooltips */
