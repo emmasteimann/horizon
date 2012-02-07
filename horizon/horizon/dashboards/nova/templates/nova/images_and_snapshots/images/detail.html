@@ -1,9 +1,9 @@
 {% extends 'nova/base.html' %}
-{% load i18n sizeformat %}
+{% load i18n sizeformat parse_date %}
 {% block title %}Image Detail{% endblock %}
 
 {% block page_header %}
-  {% include "horizon/common/_page_header.html" with title="Image Detail: "|add:name %}
+  {% include "horizon/common/_page_header.html" with title="Image Detail: "|add:image_data.name %}
 {% endblock page_header %}
 
 {% block dash_main %}
@@ -15,11 +15,11 @@
         <div class="status">
           <h4>{% trans "Status" %}</h4>
           <ul>
-            <li><span>{% trans "Image Status:" %}</span> {{ status }}</li>
-            <li><span>{% trans "Image ID:" %}</span>{{ image_id }}</li>
-            <li><span>{% trans "Image Name:" %}</span> {{ name }}</li>
-            <li><span>{% trans "Created At:" %}</span> {{ created_at }}</li>
-            <li><span>{% trans "Last Updated At:" %}</span> {{ updated_at }}</li>
+            <li><span>{% trans "Image Status:" %}</span> {{ image_data.status }}</li>
+            <li><span>{% trans "Image ID:" %}</span> {{ image_id }}</li>
+            <li><span>{% trans "Image Name:" %}</span> {{ image_data.name }}</li>
+            <li><span>{% trans "Created At:" %}</span> {{ image_data.created_at|parse_datetime }}</li>
+            <li><span>{% trans "Last Updated At:" %}</span> {{ image_data.updated_at|parse_datetime }}</li>
           </ul>
         </div>
       </li>
@@ -28,40 +28,42 @@
         <div class="specs">
           <h4>{% trans "Specs" %}</h4>
           <ul>
-            <li><span>{% trans "Size:" %}</span> {{ size }}</li>
-            <li><span>{% trans "Container Format:" %}</span> {{ container_format }}</li>
-            <li><span>{% trans "Disk Format:" %}</span> {{ disk_format }}</li>
+            <li><span>{% trans "Size:" %}</span> {{ image_data.size|diskgbformat }}</li>
+            <li><span>{% trans "Container Format:" %}</span> {{ image_data.container_format }}</li>
+            <li><span>{% trans "Disk Format:" %}</span> {{ image_data.disk_format }}</li>
           </ul>
         </div>
       </li>
-      {% if property_length %}
-        <li>
-          <div class="customer_properties">
-            <h4>{% trans "Custom Properties" %}</h4>
-            <ul>
-              {% if image_properties.architecture %}
-              <li><span>{% trans "Architecture:" %}</span> {{ image_properties.architecture }}</li>
-              {% endif %}
-              {% if image_properties.kernel %}
-              <li><span>{% trans "Kernel ID:" %}</span> {{ image_properties.kernel }}</li>
-              {% endif %}
-              {% if image_properties.ramdisk %}
-              <li><span>{% trans "Ramdisk ID:" %}</span> {{ image_properties.ramdisk }}</li>
-              {% endif %}
-              {% if image_properties.image_state %}
-              <li><span>{% trans "Image State:" %}</span> {{ image_properties.image_state }}</li>
-              {% endif %}
-              {% if image_properties.project_id %}
-              <li><span>{% trans "Project ID:" %}</span> {{ image_properties.project_id }}</li>
-              {% endif %}
-              {% if image_properties.image_type %}
-              <li><span>{% trans "Image Type:" %}</span> {{ image_properties.image_type }}</li>
-              {% endif %}
-            </ul>
-          </div>
-        </li>
-      {% endif %}
-    </ul>
+    
+
+    {%  if image_properties %}
+      <li>
+        <div class="customer_properties">
+          <h4>{% trans "Custom Properties" %}</h4>
+          <ul>
+            {% if image_properties.architecture %}
+            <li><span>{% trans "Architecture:" %}</span> {{ image_properties.architecture }}</li>
+            {% endif %}
+            {% if image_properties.kernel_id %}
+            <li><span>{% trans "Kernel ID:" %}</span> {{ image_properties.kernel_id }}</li>
+            {% endif %}
+            {% if image_properties.ramdisk_id %}
+            <li><span>{% trans "Ramdisk ID:" %}</span> {{ image_properties.ramdisk_id }}</li>
+            {% endif %}
+            {% if image_properties.image_state %}
+            <li><span>{% trans "Image State:" %}</span> {{ image_properties.image_state }}</li>
+            {% endif %}
+            {% if image_properties.project_id %}
+            <li><span>{% trans "Project ID:" %}</span> {{ image_properties.project_id }}</li>
+            {% endif %}
+            {% if image_properties.image_type %}
+            <li><span>{% trans "Image Type:" %}</span> {{ image_properties.image_type }}</li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+    {% endif %}
+</ul>
   </div>
 
 </div>

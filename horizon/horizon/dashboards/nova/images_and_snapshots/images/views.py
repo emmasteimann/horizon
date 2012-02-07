@@ -156,7 +156,7 @@ class DetailView(views.APIView):
         image_id = kwargs['image_id']
 
         try:
-            self.object = api.image_get_meta(self.request, kwargs['image_id'])
+            self.object = api.glance.image_get_meta(self.request, kwargs['image_id'])
 
         except:
             redirect = reverse('horizon:nova:images_and_snapshots:index')
@@ -164,27 +164,11 @@ class DetailView(views.APIView):
                               _('Unable to retrieve details for '
                                 'instance "%s".') % image_id,
                                 redirect=redirect)
+        #import pdb; pdb.set_trace()
+        context.update({'image_id': self.kwargs['image_id'],
+                        'image_data': self.object,
+                        'image_properties': 
+                              self.object["properties"].__dict__['_apidict']
+                      })
 
-        properties = self.object['properties']
-
-        image_properties = {  'kernel': properties.get('kernel_id', ''),
-                              'ramdisk': properties.get('ramdisk_id', ''),
-                              'architecture': properties.get('architecture', ''),
-                              'image_state': properties.get('image_state', ''),
-                              'project_id': properties.get('project_id', ''),
-                              'image_type': properties.get('image_type', ''),
-                            }
-
-        property_length = len(''.join(image_properties.values()))
-
-        return {'image_id': self.kwargs['image_id'],
-                'name': self.object.get('name', ''),
-                'created_at': self.object.get('created_at', ''),
-                'size': self.object.get('size', ''),
-                'status': self.object.get('status', ''),
-                'updated_at': self.object.get('updated_at', ''),
-                'container_format': self.object.get('container_format', ''),
-                'disk_format': self.object.get('disk_format', ''),
-                'image_properties': image_properties,
-                'property_length': property_length,
-                 }
+        return context

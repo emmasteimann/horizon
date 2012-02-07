@@ -28,5 +28,5 @@ VIEWS_MOD = 'horizon.dashboards.nova.images_and_snapshots.images.views'
 urlpatterns = patterns(VIEWS_MOD,
     url(r'^(?P<image_id>[^/]+)/launch/$', LaunchView.as_view(), name='launch'),
     url(r'^(?P<image_id>[^/]+)/update/$', UpdateView.as_view(), name='update'),
-    url(r'^(?P<image_id>[^/]+)/detail/$', DetailView.as_view(), name='detail'),
+    url(r'^(?P<image_id>[^/]+)/$', DetailView.as_view(), name='detail'),
 )
