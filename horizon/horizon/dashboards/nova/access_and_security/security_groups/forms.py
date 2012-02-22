@@ -52,6 +52,25 @@ class CreateGroup(forms.SelfHandlingForm):
         return shortcuts.redirect('horizon:nova:access_and_security:index')
 
 
+class UpdateGroup(forms.SelfHandlingForm):
+    name = forms.CharField(validators=[validators.validate_slug])
+    description = forms.CharField()
+    tenant_id = forms.CharField(widget=forms.HiddenInput())
+
+    def handle(self, request, data):
+        try:
+            api.security_group_update(request, 
+                                      data['security_group_id'],
+                                      data['name'],
+                                      data['description'])
+            messages.success(request,
+                             _('Successfully created security_group: %s')
+                                    % data['name'])
+        except:
+            exceptions.handle(request, _('Unable to create security group.'))
+        return shortcuts.redirect('horizon:nova:access_and_security:index')
+
+
 class AddRule(forms.SelfHandlingForm):
     ip_protocol = forms.ChoiceField(choices=[('tcp', 'tcp'),
                                              ('udp', 'udp'),

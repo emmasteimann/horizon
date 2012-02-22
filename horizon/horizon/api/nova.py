@@ -371,6 +371,10 @@ def security_group_get(request, security_group_id):
                          security_groups.get(security_group_id))
 
 
+def security_group_update(request, security_group_id, **kwargs):
+    return novaclient(request).security_groups.update(security_group_id, **kwargs)
+
+
 def security_group_create(request, name, description):
     return SecurityGroup(novaclient(request).\
                          security_groups.create(name, description))

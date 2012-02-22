@@ -31,7 +31,7 @@ from novaclient import exceptions as novaclient_exceptions
 from horizon import api
 from horizon import forms
 from horizon import tables
-from .forms import CreateGroup, AddRule
+from .forms import CreateGroup, UpdateGroup, AddRule
 from .tables import RulesTable
 
 
@@ -90,3 +90,21 @@ class CreateView(forms.ModalFormView):
 
     def get_initial(self):
         return {"tenant_id": self.request.user.tenant_id}
+
+
+class UpdateView(forms.ModalFormView):
+  form_class = UpdateGroup
+  template_name = 'nova/access_and_security/security_groups/update.html'
+
+  def get_data(self, request, *args, **kwargs):
+      security_group_id = int(self.kwargs['security_group_id'])
+      try:
+          self.object = api.nova.security_group_get(self.request,
+                                               security_group_id)
+      except novaclient_exceptions.ClientException, e:
+          self.object = None
+          rules = []
+          LOG.exception("ClientException in security_groups rules edit")
+          messages.error(self.request,
+                         _('Error getting security_group: %s') % e)
+      return self.object

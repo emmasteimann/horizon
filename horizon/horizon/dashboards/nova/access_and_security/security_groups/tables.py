@@ -53,8 +53,16 @@ class EditRules(tables.LinkAction):
     attrs = {"class": "ajax-modal"}
 
 
+class UpdateGroup(tables.LinkAction):
+    name = "update"
+    verbose_name = _("Update Group")
+    url = "horizon:nova:access_and_security:security_groups:update"
+    attrs = {"class": "ajax-modal"}
+
+
 class SecurityGroupsTable(tables.DataTable):
-    name = tables.Column("name")
+    name = tables.Column("name",
+                        link="horizon:nova:access_and_security:security_groups:update")
     description = tables.Column("description")
 
     def sanitize_id(self, obj_id):
@@ -64,7 +72,7 @@ class SecurityGroupsTable(tables.DataTable):
         name = "security_groups"
         verbose_name = _("Security Groups")
         table_actions = (CreateGroup, DeleteGroup)
-        row_actions = (EditRules, DeleteGroup)
+        row_actions = (UpdateGroup, EditRules, DeleteGroup)
 
 
 class DeleteRule(tables.DeleteAction):

@@ -20,11 +20,12 @@
 
 from django.conf.urls.defaults import patterns, url
 
-from .views import CreateView, EditRulesView
+from .views import CreateView, UpdateView, EditRulesView
 
 
 urlpatterns = patterns('',
     url(r'^create/$', CreateView.as_view(), name='create'),
+    url(r'^(?P<security_group_id>[^/]+)/update/$', UpdateView.as_view(), name='update'),
     url(r'^(?P<security_group_id>[^/]+)/edit_rules/$',
         EditRulesView.as_view(),
         name='edit_rules'))
